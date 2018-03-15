@@ -1,0 +1,23 @@
+{
+  "name": "teamManager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.6.0",
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "mongodb-autoincrement": "^1.0.1",
+    "mongoose": "^5.0.7",
+    "mongoose-unique-validator": "^2.0.0",
+    "node-fetch": "^2.1.1"
+  }
+}

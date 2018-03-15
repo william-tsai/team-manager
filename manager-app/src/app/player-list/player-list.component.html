@@ -1,0 +1,30 @@
+<button [routerLink] = "['/dashboard']">Back to Team List</button>
+<button [routerLink] = "['/teams/' + teamId + '/add-player']">Add a Player</button>
+<h2>{{teamName}}</h2>
+<h3>Game scheduled for {{date}}:</h3>
+<div *ngIf = "noGame == false">
+  <p>Opponent: {{opponent}}</p>
+  <p>Arena: {{venue.name}}</p>
+  <p>Location: {{venue.city}}, {{venue.state}}</p>
+</div>
+<!-- <div *ngIf = "noGame">
+  <p>No game scheduled</p>
+</div> -->
+<table>
+  <thead>
+    <th>Name</th>
+    <th>Position</th>
+    <th>Status</th>
+  </thead>
+  <tbody>
+    <tr *ngFor = "let player of players">
+      <td>{{player.name}}</td>
+      <td>{{player.position}}</td>
+      <td>
+        <button [ngClass] = "{ 'playing-on': player.isPlaying }" (click) = "submitStatus(player._id, 'playing')">Playing</button>
+        <button [ngClass] = "{ 'not-playing-on': player.isNotPlaying }" (click) = "submitStatus(player._id, 'not playing')">Not Playing</button>
+        <button [ngClass] = "{ 'undecided-on': player.isUndecided }" (click) = "submitStatus(player._id, 'undecided')">Undecided</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

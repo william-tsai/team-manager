@@ -1,0 +1,22 @@
+<table>
+  <thead>
+    <th>Team Name</th>
+    <th>Number of Players</th>
+    <th>Actions</th>
+  </thead>
+  <tbody>
+    <tr *ngFor = "let team of teams">
+      <td><a [routerLink] = "['/teams/' + team._id + '/players']">{{team.name}}</a></td>
+      <td>{{team.players.length}}</td>
+      <td>
+        <button (click) = "deleteBtnClicked(team._id)">Delete</button>
+        <button [routerLink] = "['/teams/' + team._id + '/add-player']">Add Player</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+

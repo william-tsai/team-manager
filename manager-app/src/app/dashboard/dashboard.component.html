@@ -1,0 +1,4 @@
+<button (click) = "logoutBtnClicked()">Logout</button>
+<button (click) = "showList()">List</button> | <button (click) = "showAddTeam()">Add Team</button>
+<app-list *ngIf = "isListVisible == true"></app-list>
+<app-add-team *ngIf = "isAddFormVisible == true" (addEvent) = "receiveChildData($event)"></app-add-team>
