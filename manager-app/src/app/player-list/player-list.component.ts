@@ -15,7 +15,7 @@ export class PlayerListComponent implements OnInit {
   date: string = "";
   opponent: string = "";
   venue: any = {};
-  noGame: boolean = false;
+  noGame: boolean = true;
 
   constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute) { }
 
@@ -23,7 +23,6 @@ export class PlayerListComponent implements OnInit {
     this.route.paramMap.subscribe(params => {    
       this.teamId = params.get("id");
       this.displayPlayers();
-      this.displayGameInfo();
     })
   }
   
@@ -37,6 +36,7 @@ export class PlayerListComponent implements OnInit {
         console.log(response.message);
         this.players = response.team.players;
         this.teamName = response.team.name;
+        this.displayGameInfo();
       }
     })
   }
@@ -52,25 +52,16 @@ export class PlayerListComponent implements OnInit {
     this.apiService.getGameInfo(currentYear, currentMonth, currentDate)
     .subscribe((response: any) => {
       console.log(response);
-      if (response.games.length == 0) {
-        console.log("games length == 0 hit");
-        this.noGame = true;
-      } else {
-        for (let game of response.games) {
-          if (game.home.name.includes(this.teamName)) {
-            this.opponent = game.away.name;
-            this.venue = game.venue;
-          } else if (game.away.name.includes(this.teamName)) {
-            console.log("away:", game.away.name.includes(this.teamName));
-            console.log(game.home.name);
-            this.opponent = game.home.name;
-            console.log("Opponent:", this.opponent);
-            this.venue = game.venue;
-          } else {
-            console.log("No game for the team");
-            this.noGame = true;
-          }
-        }
+      for (let game of response.games) {
+        if (game.home.name.includes(this.teamName)) {
+          this.opponent = game.away.name;
+          this.venue = game.venue;
+          this.noGame = false;
+        } else if (game.away.name.includes(this.teamName)) {
+          this.opponent = game.home.name;
+          this.venue = game.venue;
+          this.noGame = false;
+        } 
       }
     })
   }

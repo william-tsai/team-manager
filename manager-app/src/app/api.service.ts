@@ -47,6 +47,6 @@ export class ApiService {
   }
 
   getGameInfo(year, month, day) {
-    return this.http.get(`http://api.sportradar.us/nba/trial/v4/en/games/${year}/${month}/${day}/schedule.json?api_key=9zdg687da5jth395xawqragk`);
+    return this.http.get(`https://api.sportradar.us/nba/trial/v4/en/games/${year}/${month}/${day}/schedule.json?api_key=9zdg687da5jth395xawqragk`);
   }
 }

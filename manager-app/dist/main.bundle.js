@@ -225,7 +225,7 @@ var ApiService = /** @class */ (function () {
         return this.http.put("/api/players/" + playerId, statusObj);
     };
     ApiService.prototype.getGameInfo = function (year, month, day) {
-        return this.http.get("http://api.sportradar.us/nba/trial/v4/en/games/" + year + "/" + month + "/" + day + "/schedule.json?api_key=9zdg687da5jth395xawqragk");
+        return this.http.get("https://api.sportradar.us/nba/trial/v4/en/games/" + year + "/" + month + "/" + day + "/schedule.json?api_key=9zdg687da5jth395xawqragk");
     };
     ApiService = __decorate([
         core_1.Injectable(),
@@ -664,7 +664,7 @@ module.exports = ".playing-on {\n    background-color: green;\n}\n\n.not-playing
 /***/ "./src/app/player-list/player-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<button [routerLink] = \"['/dashboard']\">Back to Team List</button>\n<button [routerLink] = \"['/teams/' + teamId + '/add-player']\">Add a Player</button>\n<h2>{{teamName}}</h2>\n<h3>Game scheduled for {{date}}:</h3>\n<div *ngIf = \"noGame == false\">\n  <p>Opponent: {{opponent}}</p>\n  <p>Arena: {{venue.name}}</p>\n  <p>Location: {{venue.city}}, {{venue.state}}</p>\n</div>\n<!-- <div *ngIf = \"noGame\">\n  <p>No game scheduled</p>\n</div> -->\n<table>\n  <thead>\n    <th>Name</th>\n    <th>Position</th>\n    <th>Status</th>\n  </thead>\n  <tbody>\n    <tr *ngFor = \"let player of players\">\n      <td>{{player.name}}</td>\n      <td>{{player.position}}</td>\n      <td>\n        <button [ngClass] = \"{ 'playing-on': player.isPlaying }\" (click) = \"submitStatus(player._id, 'playing')\">Playing</button>\n        <button [ngClass] = \"{ 'not-playing-on': player.isNotPlaying }\" (click) = \"submitStatus(player._id, 'not playing')\">Not Playing</button>\n        <button [ngClass] = \"{ 'undecided-on': player.isUndecided }\" (click) = \"submitStatus(player._id, 'undecided')\">Undecided</button>\n      </td>\n    </tr>\n  </tbody>\n</table>"
+module.exports = "<button [routerLink] = \"['/dashboard']\">Back to Team List</button>\n<button [routerLink] = \"['/teams/' + teamId + '/add-player']\">Add a Player</button>\n<h2>{{teamName}}</h2>\n<h3>Game scheduled for {{date}}:</h3>\n<div *ngIf = \"noGame == false\">\n  <p>Opponent: {{opponent}}</p>\n  <p>Arena: {{venue.name}}</p>\n  <p>Location: {{venue.city}}, {{venue.state}}</p>\n</div>\n<div *ngIf = \"noGame == true\">\n  <p>No game scheduled</p>\n</div>\n<h3>Roster:</h3>\n<table>\n  <thead>\n    <th>Name</th>\n    <th>Position</th>\n    <th>Status</th>\n  </thead>\n  <tbody>\n    <tr *ngFor = \"let player of players\">\n      <td>{{player.name}}</td>\n      <td>{{player.position}}</td>\n      <td>\n        <button [ngClass] = \"{ 'playing-on': player.isPlaying }\" (click) = \"submitStatus(player._id, 'playing')\">Playing</button>\n        <button [ngClass] = \"{ 'not-playing-on': player.isNotPlaying }\" (click) = \"submitStatus(player._id, 'not playing')\">Not Playing</button>\n        <button [ngClass] = \"{ 'undecided-on': player.isUndecided }\" (click) = \"submitStatus(player._id, 'undecided')\">Undecided</button>\n      </td>\n    </tr>\n  </tbody>\n</table>"
 
 /***/ }),
 
@@ -696,14 +696,13 @@ var PlayerListComponent = /** @class */ (function () {
         this.date = "";
         this.opponent = "";
         this.venue = {};
-        this.noGame = false;
+        this.noGame = true;
     }
     PlayerListComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.route.paramMap.subscribe(function (params) {
             _this.teamId = params.get("id");
             _this.displayPlayers();
-            _this.displayGameInfo();
         });
     };
     PlayerListComponent.prototype.displayPlayers = function () {
@@ -718,6 +717,7 @@ var PlayerListComponent = /** @class */ (function () {
                 console.log(response.message);
                 _this.players = response.team.players;
                 _this.teamName = response.team.name;
+                _this.displayGameInfo();
             }
         });
     };
@@ -733,28 +733,17 @@ var PlayerListComponent = /** @class */ (function () {
         this.apiService.getGameInfo(currentYear, currentMonth, currentDate)
             .subscribe(function (response) {
             console.log(response);
-            if (response.games.length == 0) {
-                console.log("games length == 0 hit");
-                _this.noGame = true;
-            }
-            else {
-                for (var _i = 0, _a = response.games; _i < _a.length; _i++) {
-                    var game = _a[_i];
-                    if (game.home.name.includes(_this.teamName)) {
-                        _this.opponent = game.away.name;
-                        _this.venue = game.venue;
-                    }
-                    else if (game.away.name.includes(_this.teamName)) {
-                        console.log("away:", game.away.name.includes(_this.teamName));
-                        console.log(game.home.name);
-                        _this.opponent = game.home.name;
-                        console.log("Opponent:", _this.opponent);
-                        _this.venue = game.venue;
-                    }
-                    else {
-                        console.log("No game for the team");
-                        _this.noGame = true;
-                    }
+            for (var _i = 0, _a = response.games; _i < _a.length; _i++) {
+                var game = _a[_i];
+                if (game.home.name.includes(_this.teamName)) {
+                    _this.opponent = game.away.name;
+                    _this.venue = game.venue;
+                    _this.noGame = false;
+                }
+                else if (game.away.name.includes(_this.teamName)) {
+                    _this.opponent = game.home.name;
+                    _this.venue = game.venue;
+                    _this.noGame = false;
                 }
             }
         });
