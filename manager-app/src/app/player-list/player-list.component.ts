@@ -23,6 +23,7 @@ export class PlayerListComponent implements OnInit {
     this.route.paramMap.subscribe(params => {    
       this.teamId = params.get("id");
       this.displayPlayers();
+      this.displayGameInfo();
     })
   }
   
@@ -36,7 +37,6 @@ export class PlayerListComponent implements OnInit {
         console.log(response.message);
         this.players = response.team.players;
         this.teamName = response.team.name;
-        this.displayGameInfo();
       }
     })
   }

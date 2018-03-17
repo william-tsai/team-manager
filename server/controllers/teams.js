@@ -54,42 +54,32 @@ module.exports = {
         });
     },
     deleteTeam: function(request, response) {
-        console.log("deleteTeam hit");
-        User.findOne({_id: request.session.userId}, function(err, foundUser) {
-            if (err) {
-                response.json(err);
-            } else {
-                console.log("User found!");
-                for (let teamId of foundUser.teams) {
-                    if (teamId == request.params.id) {
-                        console.log("teamId match found!");
-                        var index = foundUser.teams.indexOf(teamId);
-                        foundUser.teams.splice(index, 1);
-                        foundUser.save(function(err) {
-                            if (err) {
-                                response.json(err);
-                                console.log("Something wrong updating user after removing a team id");
-                            } else {
-                                Player.deleteMany({_team: teamId}, function(err) {
-                                    if (err) {
-                                        response.json(err);
-                                    } else {
-                                        Team.remove({_id: teamId}, function(err) {
-                                            if (err) {
-                                                response.json(err);
-                                            } else {
-                                                response.json({message: "Team deleted!"})
-                                            }
-                                        })
-                                    }
-                                })
-                            }
+        User.findOne({_id: request.session.userId}).exec()
+        .then(function(foundUser) {
+            async function deleteTeamAndPlayers(user, teamId) {
+                for (let team of user.teams) {
+                    if (team == teamId) {
+                        var index = await user.teams.indexOf(team);
+                        await user.teams.splice(index, 1);
+                        await user.save();
+                        Player.deleteMany({_team: teamId}).exec()
+                        .then(function() {
+                            Team.remove({_id: teamId}, function(err) {
+                                if (err) {
+                                    response.json(err);
+                                } else {
+                                    response.json({message: "Team deleted!"})
+                                }
+                            })
                         })
                     } else {
                         response.json({errors: {error: {message: "Selected team to be deleted not found in user's teams"}}});
                     }
                 }
             }
-        })
+            deleteTeamAndPlayers(foundUser, request.params.id);
+        }).catch(function(err) {
+            console.log(err);
+        });
     }
 }

@@ -703,6 +703,7 @@ var PlayerListComponent = /** @class */ (function () {
         this.route.paramMap.subscribe(function (params) {
             _this.teamId = params.get("id");
             _this.displayPlayers();
+            _this.displayGameInfo();
         });
     };
     PlayerListComponent.prototype.displayPlayers = function () {
@@ -717,7 +718,6 @@ var PlayerListComponent = /** @class */ (function () {
                 console.log(response.message);
                 _this.players = response.team.players;
                 _this.teamName = response.team.name;
-                _this.displayGameInfo();
             }
         });
     };
