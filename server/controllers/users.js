@@ -31,7 +31,6 @@ module.exports = {
                 response.json({errors: {message: "This email does not exit"}});
             } else {
                 console.log(foundUser);
-                console.log(request.body.password);
                 bcrypt.compare(request.body.password, foundUser.password, function(err, result) {
                     if (err) {
                         console.log(err);

@@ -57,8 +57,12 @@ module.exports = {
         User.findOne({_id: request.session.userId}).exec()
         .then(function(foundUser) {
             async function deleteTeamAndPlayers(user, teamId) {
+                console.log("selected teamId: ", teamId);
+                console.log("user.teams: ", user.teams);
                 for (let team of user.teams) {
+                    console.log("each team: ", team);
                     if (team == teamId) {
+                        console.log("Id matched");
                         var index = await user.teams.indexOf(team);
                         await user.teams.splice(index, 1);
                         await user.save();
@@ -72,8 +76,6 @@ module.exports = {
                                 }
                             })
                         })
-                    } else {
-                        response.json({errors: {error: {message: "Selected team to be deleted not found in user's teams"}}});
                     }
                 }
             }
