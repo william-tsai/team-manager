@@ -55,5 +55,29 @@ module.exports = {
                 response.json({message: "Player status updated!"});
             }
         })
+    },
+    addNewPlayer: function(request, response) {
+        Team.findOne({_id: request.params.id}, function(err, foundTeam) {
+            if (err) {
+                response.json(err);
+            } else {
+                var newPlayer = new Player(request.body);
+                newPlayer._team = foundTeam._id;
+                foundTeam.players.push(newPlayer._id);
+                newPlayer.save(function(err) {
+                    if (err) {
+                        response.json(err);
+                    } else {
+                        foundTeam.save(function(err) {
+                            if (err) {
+                                response.json(err);
+                            } else {
+                                response.json({message: "New player added"});
+                            }
+                        })
+                    }
+                })
+            }
+        })
     }
 }

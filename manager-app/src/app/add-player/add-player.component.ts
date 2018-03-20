@@ -21,18 +21,18 @@ export class AddPlayerComponent implements OnInit {
   }
 
   submitToCreatePlayer() {
-    // this.apiService.createPlayer(this.teamId, this.newPlayer)
-    // .subscribe((response: any) => {
-    //   if (response.errors) {
-    //     this.errors = [];
-    //     for (let error in response.errors) {
-    //       console.log(response.errors[error].message);
-    //       this.errors.push(response.errors[error].message);
-    //     };
-    //   } else {
-    //     console.log(response.message);
-    //     this.router.navigate(['/teams/' + this.teamId + '/players']);
-    //   }
-    // })
+    this.apiService.createPlayer(this.teamId, this.newPlayer)
+    .subscribe((response: any) => {
+      if (response.errors) {
+        this.errors = [];
+        for (let error in response.errors) {
+          console.log(response.errors[error].message);
+          this.errors.push(response.errors[error].message);
+        };
+      } else {
+        console.log(response.message);
+        this.router.navigate(['/teams/' + this.teamId + '/players']);
+      }
+    })
   }
 }

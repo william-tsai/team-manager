@@ -10,7 +10,7 @@ module.exports = function(app) {
     app.post("/api/login", users.login);
     app.post("/api/teams", teams.addTeam);
     app.post("/api/teams/:id/sportrader/players", players.addPlayersToDB);
-    // app.post("/api/teams/:id/user/players", players.addNewPlayer);
+    app.post("/api/teams/:id/user/players", players.addNewPlayer);
     app.put("/api/players/:id", players.updateStatus);
     app.delete("/api/teams/:id", teams.deleteTeam);
 

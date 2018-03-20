@@ -35,7 +35,7 @@ export class ApiService {
   }
 
   createPlayer(teamId, newPlayerObj) {
-    // return this.http.post(`/api/teams/${teamId}/user/players`, newPlayerObj);
+    return this.http.post(`/api/teams/${teamId}/user/players`, newPlayerObj);
   }
 
   logUserOut() {

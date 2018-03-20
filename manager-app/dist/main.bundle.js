@@ -64,19 +64,22 @@ var AddPlayerComponent = /** @class */ (function () {
         });
     };
     AddPlayerComponent.prototype.submitToCreatePlayer = function () {
-        // this.apiService.createPlayer(this.teamId, this.newPlayer)
-        // .subscribe((response: any) => {
-        //   if (response.errors) {
-        //     this.errors = [];
-        //     for (let error in response.errors) {
-        //       console.log(response.errors[error].message);
-        //       this.errors.push(response.errors[error].message);
-        //     };
-        //   } else {
-        //     console.log(response.message);
-        //     this.router.navigate(['/teams/' + this.teamId + '/players']);
-        //   }
-        // })
+        var _this = this;
+        this.apiService.createPlayer(this.teamId, this.newPlayer)
+            .subscribe(function (response) {
+            if (response.errors) {
+                _this.errors = [];
+                for (var error in response.errors) {
+                    console.log(response.errors[error].message);
+                    _this.errors.push(response.errors[error].message);
+                }
+                ;
+            }
+            else {
+                console.log(response.message);
+                _this.router.navigate(['/teams/' + _this.teamId + '/players']);
+            }
+        });
     };
     AddPlayerComponent = __decorate([
         core_1.Component({
@@ -216,7 +219,7 @@ var ApiService = /** @class */ (function () {
         return this.http.post("/api/teams/" + teamSRId + "/sportrader/players", teamSRData);
     };
     ApiService.prototype.createPlayer = function (teamId, newPlayerObj) {
-        // return this.http.post(`/api/teams/${teamId}/user/players`, newPlayerObj);
+        return this.http.post("/api/teams/" + teamId + "/user/players", newPlayerObj);
     };
     ApiService.prototype.logUserOut = function () {
         return this.http.get("/api/logout");
@@ -574,7 +577,7 @@ module.exports = ""
 /***/ "./src/app/login-reg/login-reg.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Player of the day!</h2>\n<div id=\"player_highlight\">\n\n</div>\n<div id=\"login\">\n  <h2>Log In</h2>\n  <form (submit) = \"login()\">\n    <p>Email: <input type=\"email\" name=\"email\" [(ngModel)] = \"user.email\"></p>\n    <p>Password: <input type=\"password\" name=\"password\" [(ngModel)] = \"user.password\"></p>\n    <button type=\"submit\">Login</button>\n    <p>{{logErrors}}</p>\n  </form>\n</div>\n<div id=\"reg\">\n  <h2>Register</h2>\n  <form (submit) = \"register()\">\n      <p>First Name: <input type=\"text\" name=\"firstName\" [(ngModel)] = \"newUser.firstName\"></p>\n      <p>Last Name: <input type=\"text\" name=\"lastName\" [(ngModel)] = \"newUser.lastName\"></p>\n      <p>Email: <input type=\"email\" name=\"email\" [(ngModel)] = \"newUser.email\"></p>\n      <p>Password: <input type=\"password\" name=\"password\" [(ngModel)] = \"newUser.password\"></p>\n      <p>Confirm Password: <input type=\"password\" name=\"pwConfirm\" [(ngModel)] = \"newUser.pwConfirm\"></p>\n      <button type=\"submit\">Register</button>\n      <p *ngIf = \"showRegSuccess == true\">Success! Feel free to log in!</p>\n      <p>{{regErrors}}</p>\n  </form>\n</div>"
+module.exports = "<div id=\"login\">\n  <h2>Log In</h2>\n  <form (submit) = \"login()\">\n    <p>Email: <input type=\"email\" name=\"email\" [(ngModel)] = \"user.email\"></p>\n    <p>Password: <input type=\"password\" name=\"password\" [(ngModel)] = \"user.password\"></p>\n    <button type=\"submit\">Login</button>\n    <p>{{logErrors}}</p>\n  </form>\n</div>\n<div id=\"reg\">\n  <h2>Register</h2>\n  <form (submit) = \"register()\">\n      <p>First Name: <input type=\"text\" name=\"firstName\" [(ngModel)] = \"newUser.firstName\"></p>\n      <p>Last Name: <input type=\"text\" name=\"lastName\" [(ngModel)] = \"newUser.lastName\"></p>\n      <p>Email: <input type=\"email\" name=\"email\" [(ngModel)] = \"newUser.email\"></p>\n      <p>Password: <input type=\"password\" name=\"password\" [(ngModel)] = \"newUser.password\"></p>\n      <p>Confirm Password: <input type=\"password\" name=\"pwConfirm\" [(ngModel)] = \"newUser.pwConfirm\"></p>\n      <button type=\"submit\">Register</button>\n      <p *ngIf = \"showRegSuccess == true\">Success! Feel free to log in!</p>\n      <p>{{regErrors}}</p>\n  </form>\n</div>"
 
 /***/ }),
 
