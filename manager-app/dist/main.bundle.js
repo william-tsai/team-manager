@@ -667,7 +667,7 @@ module.exports = ".playing-on {\n    background-color: green;\n}\n\n.not-playing
 /***/ "./src/app/player-list/player-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<button [routerLink] = \"['/dashboard']\">Back to Team List</button>\n<button [routerLink] = \"['/teams/' + teamId + '/add-player']\">Add a Player</button>\n<h2>{{teamName}}</h2>\n<h3>Game scheduled for {{date}}:</h3>\n<div *ngIf = \"noGame == false\">\n  <p>Opponent: {{opponent}}</p>\n  <p>Arena: {{venue.name}}</p>\n  <p>Location: {{venue.city}}, {{venue.state}}</p>\n</div>\n<div *ngIf = \"noGame == true\">\n  <p>No game scheduled</p>\n</div>\n<h3>Roster:</h3>\n<table>\n  <thead>\n    <th>Name</th>\n    <th>Position</th>\n    <th>Status</th>\n  </thead>\n  <tbody>\n    <tr *ngFor = \"let player of players\">\n      <td>{{player.name}}</td>\n      <td>{{player.position}}</td>\n      <td>\n        <button [ngClass] = \"{ 'playing-on': player.isPlaying }\" (click) = \"submitStatus(player._id, 'playing')\">Playing</button>\n        <button [ngClass] = \"{ 'not-playing-on': player.isNotPlaying }\" (click) = \"submitStatus(player._id, 'not playing')\">Not Playing</button>\n        <button [ngClass] = \"{ 'undecided-on': player.isUndecided }\" (click) = \"submitStatus(player._id, 'undecided')\">Undecided</button>\n      </td>\n    </tr>\n  </tbody>\n</table>"
+module.exports = "<button [routerLink] = \"['/dashboard']\">Back to Team List</button>\n<button [routerLink] = \"['/teams/' + teamId + '/add-player']\">Add a Player</button>\n<h2>{{teamName}}</h2>\n<h3>Game scheduled for {{date}}:</h3>\n<div *ngIf = \"noGame == false\">\n  <p>Opponent: {{opponent}}</p>\n  <p>Arena: {{venue.name}}</p>\n  <p>Location: {{venue.city}}, {{venue.state}}</p>\n</div>\n<div *ngIf = \"noGame == true\">\n  <p>No game scheduled</p>\n</div>\n<h3>Roster:</h3>\n<div id=\"search-bar\">\n  <input type=\"text\" name=\"searchTerm\" [(ngModel)] = \"searchTerm\" (keyup) = \"search()\" placeholder=\"Search Player\">\n</div>\n<table>\n  <thead>\n    <th>Name</th>\n    <th>Position</th>\n    <th>Status</th>\n  </thead>\n  <tbody>\n    <tr *ngFor = \"let player of filteredPlayers\">\n      <td>{{player.name}}</td>\n      <td>{{player.position}}</td>\n      <td>\n        <button [ngClass] = \"{ 'playing-on': player.isPlaying }\" (click) = \"submitStatus(player._id, 'playing')\">Playing</button>\n        <button [ngClass] = \"{ 'not-playing-on': player.isNotPlaying }\" (click) = \"submitStatus(player._id, 'not playing')\">Not Playing</button>\n        <button [ngClass] = \"{ 'undecided-on': player.isUndecided }\" (click) = \"submitStatus(player._id, 'undecided')\">Undecided</button>\n      </td>\n    </tr>\n  </tbody>\n</table>"
 
 /***/ }),
 
@@ -695,6 +695,7 @@ var PlayerListComponent = /** @class */ (function () {
         this.router = router;
         this.route = route;
         this.players = [];
+        this.filteredPlayers = [];
         this.teamName = "";
         this.date = "";
         this.opponent = "";
@@ -720,6 +721,7 @@ var PlayerListComponent = /** @class */ (function () {
             else {
                 console.log(response.message);
                 _this.players = response.team.players;
+                _this.filteredPlayers = _this.players;
                 _this.teamName = response.team.name;
             }
         });
@@ -773,6 +775,10 @@ var PlayerListComponent = /** @class */ (function () {
                 _this.displayPlayers();
             }
         });
+    };
+    PlayerListComponent.prototype.search = function () {
+        var _this = this;
+        this.filteredPlayers = this.players.filter(function (player) { return player.name.includes(_this.searchTerm); });
     };
     PlayerListComponent = __decorate([
         core_1.Component({

@@ -11,6 +11,9 @@
   <p>No game scheduled</p>
 </div>
 <h3>Roster:</h3>
+<div id="search-bar">
+  <input type="text" name="searchTerm" [(ngModel)] = "searchTerm" (keyup) = "search()" placeholder="Search Player">
+</div>
 <table>
   <thead>
     <th>Name</th>
@@ -18,7 +21,7 @@
     <th>Status</th>
   </thead>
   <tbody>
-    <tr *ngFor = "let player of players">
+    <tr *ngFor = "let player of filteredPlayers">
       <td>{{player.name}}</td>
       <td>{{player.position}}</td>
       <td>

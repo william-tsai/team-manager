@@ -10,12 +10,14 @@ import { isJsObject } from '@angular/core/src/change_detection/change_detection_
 })
 export class PlayerListComponent implements OnInit {
   players: any = [];
+  filteredPlayers: any = [];
   teamName: string = "";
   teamId: string;
   date: string = "";
   opponent: string = "";
   venue: any = {};
   noGame: boolean = true;
+  searchTerm: string;
 
   constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute) { }
 
@@ -36,6 +38,7 @@ export class PlayerListComponent implements OnInit {
       } else {
         console.log(response.message);
         this.players = response.team.players;
+        this.filteredPlayers = this.players;
         this.teamName = response.team.name;
       }
     })
@@ -84,6 +87,12 @@ export class PlayerListComponent implements OnInit {
         this.displayPlayers();
       } 
     })
+  }
+
+  search() {
+    this.filteredPlayers = this.players.filter(
+      player => player.name.includes(this.searchTerm)
+    );
   }
 
 }
