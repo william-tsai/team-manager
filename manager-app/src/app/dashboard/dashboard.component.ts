@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class DashboardComponent implements OnInit {
   isListVisible: boolean;
   isAddFormVisible: boolean;
+  isLoggedIn: boolean = true;
 
   constructor(private apiService: ApiService, private router: Router) { }
 

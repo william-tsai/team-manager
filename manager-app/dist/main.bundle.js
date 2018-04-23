@@ -20,14 +20,14 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 /***/ "./src/app/add-player/add-player.component.css":
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = ".container {\n    width: 50rem;\n}\nh3 {\n    margin-bottom: 1.5rem;\n}"
 
 /***/ }),
 
 /***/ "./src/app/add-player/add-player.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<button [routerLink] = \"['/teams/' + teamId + '/players']\">Cancel</button>\n<form (submit) = \"submitToCreatePlayer()\">\n    <p>Name: <input type=\"text\" name=\"name\" [(ngModel)] = \"newPlayer.name\"></p>\n    <p>Position: <input type=\"text\" name=\"position\" [(ngModel)] = \"newPlayer.position\"></p>\n    <button type=\"submit\">Add Player</button>\n    <p *ngFor = \"let error of errors\">{{error}}</p>\n</form>"
+module.exports = "<div class=\"container\">\n    <h3>Add A New Player</h3>\n    <form (submit) = \"submitToCreatePlayer()\">\n        <div class=\"form-group\">\n            <input class=\"form-control\" type=\"text\" name=\"name\" placeholder=\"Name\" [(ngModel)] = \"newPlayer.name\">\n        </div>\n        <div class=\"form-group\">\n            <input class=\"form-control\" type=\"text\" name=\"position\" placeholder=\"Position\" [(ngModel)] = \"newPlayer.position\">\n        </div>\n        <button type=\"submit\" class=\"btn btn-outline-primary\">Add Player</button>\n        <button type=\"button\" class=\"btn btn-outline-secondary\" [routerLink] = \"['/teams/' + teamId + '/players']\">Cancel</button>\n        <p *ngFor = \"let error of errors\">{{error}}</p>\n    </form>\n</div>"
 
 /***/ }),
 
@@ -99,14 +99,14 @@ exports.AddPlayerComponent = AddPlayerComponent;
 /***/ "./src/app/add-team/add-team.component.css":
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = "h6 {\n    margin: 1rem 0 1.5rem 0;\n}"
 
 /***/ }),
 
 /***/ "./src/app/add-team/add-team.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h3>Add A Team</h3>\n<form (submit) = \"submitToCreateTeamAndEmit()\">\n  <p>Team name: <input type=\"text\" name=\"name\" [(ngModel)]=\"newTeam.name\"></p>\n  <button type=\"submit\">Create</button>\n</form>"
+module.exports = "<h6>\n  Enter a non-existing team name to create your own\n  <br>\n  Or\n  <br> \n  Enter an existing team name (e.g. Lakers) to have its roster automatically populated \n</h6>\n<form (submit) = \"submitToCreateTeamAndEmit()\">\n  <div class=\"form-group\">\n    <input class=\"form-control\" type=\"text\" name=\"name\" placeholder=\"Team Name\" [(ngModel)]=\"newTeam.name\">\n  </div>\n  <button type=\"submit\" class=\"btn btn-primary btn-block\">Add</button>\n</form>"
 
 /***/ }),
 
@@ -287,14 +287,14 @@ exports.AppRoutingModule = AppRoutingModule;
 /***/ "./src/app/app.component.css":
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = "* {\n    margin: 0;\n    padding: 0;\n}\nh1 {\n    text-align: center;\n    margin: 7rem 0 2rem 0;\n}\n.background {\n    background-image: url('sports.7557fbbf685626d83a8a.png');\n    background-attachment: fixed;\n    background-size: cover;\n    background-position: center;\n}\n.no-background {\n    background-color: #ffffff;\n}\n.overlay {\n    position: absolute;\n    min-height: 100%;\n    min-width: 100%;\n    left: 0;\n    top: 0;\n    background: rgba(244, 244, 244, 0.90);\n}\n.no-overlay {\n    background-color: #ffffff;\n}"
 
 /***/ }),
 
 /***/ "./src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1>Team Manger</h1>\n<router-outlet></router-outlet>\n"
+module.exports = "<div class=\"background\">\n    <div class=\"overlay\">\n        <h1>Team Roster Manger</h1>\n        <router-outlet (activate)=\"onActivate($event)\"></router-outlet>\n    </div>\n</div>\n"
 
 /***/ }),
 
@@ -309,18 +309,49 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var platform_browser_1 = __webpack_require__("./node_modules/@angular/platform-browser/esm5/platform-browser.js");
 var AppComponent = /** @class */ (function () {
-    function AppComponent() {
-        this.title = 'app';
+    function AppComponent(document) {
+        this.document = document;
     }
+    AppComponent.prototype.ngOnInit = function () {
+        $(document).ready(function () {
+            $('.background').height($(window).height());
+        });
+    };
+    AppComponent.prototype.onActivate = function (event) {
+        console.log(event);
+        console.log("login?:", event.isLoggedIn);
+        if (event.isLoggedIn == true) {
+            console.log("isLoggedIn is true");
+            this.document.getElementsByClassName("background")[0].setAttribute("class", "no-background");
+            this.document.getElementsByClassName("overlay")[0].setAttribute("class", "no-overlay");
+        }
+        else if (event.isLoggedIn == false) {
+            console.log("isLoggedIn is false");
+            this.document.getElementsByClassName("no-background")[0].setAttribute("class", "background");
+            this.document.getElementsByClassName("no-overlay")[0].setAttribute("class", "overlay");
+        }
+        else {
+            console.log("Other components");
+        }
+    };
     AppComponent = __decorate([
         core_1.Component({
             selector: 'app-root',
             template: __webpack_require__("./src/app/app.component.html"),
             styles: [__webpack_require__("./src/app/app.component.css")]
-        })
+        }),
+        __param(0, core_1.Inject(platform_browser_1.DOCUMENT)),
+        __metadata("design:paramtypes", [Object])
     ], AppComponent);
     return AppComponent;
 }());
@@ -390,14 +421,14 @@ exports.AppModule = AppModule;
 /***/ "./src/app/dashboard/dashboard.component.css":
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = ".container {\n    width: 50rem;\n}\n.row {\n    margin-bottom: 1rem;\n}"
 
 /***/ }),
 
 /***/ "./src/app/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<button (click) = \"logoutBtnClicked()\">Logout</button>\n<button (click) = \"showList()\">List</button> | <button (click) = \"showAddTeam()\">Add Team</button>\n<app-list *ngIf = \"isListVisible == true\"></app-list>\n<app-add-team *ngIf = \"isAddFormVisible == true\" (addEvent) = \"receiveChildData($event)\"></app-add-team>"
+module.exports = "<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-4\">\n            <button type=\"button\" class=\"btn btn-outline-info btn-block\" (click) = \"showList()\">Teams</button>\n        </div>\n        <div class=\"col-4\">\n            <button type=\"button\" class=\"btn btn-outline-primary btn-block\" (click) = \"showAddTeam()\">Add New Team</button>\n        </div>\n        <div class=\"col-4\">\n            <button type=\"button\" class=\"btn btn-outline-dark btn-block\" (click) = \"logoutBtnClicked()\">Logout</button>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <app-list *ngIf = \"isListVisible == true\"></app-list>\n            <app-add-team *ngIf = \"isAddFormVisible == true\" (addEvent) = \"receiveChildData($event)\"></app-add-team>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -423,6 +454,7 @@ var DashboardComponent = /** @class */ (function () {
     function DashboardComponent(apiService, router) {
         this.apiService = apiService;
         this.router = router;
+        this.isLoggedIn = true;
     }
     DashboardComponent.prototype.ngOnInit = function () {
         this.isListVisible = true;
@@ -488,7 +520,7 @@ module.exports = ""
 /***/ "./src/app/list/list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<table>\n  <thead>\n    <th>Team Name</th>\n    <th>Number of Players</th>\n    <th>Actions</th>\n  </thead>\n  <tbody>\n    <tr *ngFor = \"let team of teams\">\n      <td><a [routerLink] = \"['/teams/' + team._id + '/players']\">{{team.name}}</a></td>\n      <td>{{team.players.length}}</td>\n      <td>\n        <button (click) = \"deleteBtnClicked(team._id)\">Delete</button>\n        <button [routerLink] = \"['/teams/' + team._id + '/add-player']\">Add Player</button>\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n\n\n\n\n"
+module.exports = "<table class=\"table table-hover\">\n  <thead class=\"thead-light\">\n    <th>Team Name</th>\n    <th>Number of Players</th>\n    <th>Actions</th>\n  </thead>\n  <tbody>\n    <tr *ngFor = \"let team of teams\">\n      <td class=\"align-middle\"><a [routerLink] = \"['/teams/' + team._id + '/players']\">{{team.name}}</a></td>\n      <td class=\"align-middle\">{{team.players.length}}</td>\n      <td>\n        <button type=\"button\" class=\"btn btn-sm btn-outline-primary\" [routerLink] = \"['/teams/' + team._id + '/add-player']\">Add Player</button>\n        <button type=\"button\" class=\"btn btn-sm btn-outline-danger\" (click) = \"deleteBtnClicked(team._id)\">Delete</button>\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n\n\n\n\n"
 
 /***/ }),
 
@@ -570,14 +602,14 @@ exports.ListComponent = ListComponent;
 /***/ "./src/app/login-reg/login-reg.component.css":
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = ".container {\n    width: 30rem;\n    padding: 1rem;\n}\n#myTab {\n    margin-bottom: 1rem;\n}"
 
 /***/ }),
 
 /***/ "./src/app/login-reg/login-reg.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"login\">\n  <h2>Log In</h2>\n  <form (submit) = \"login()\">\n    <p>Email: <input type=\"email\" name=\"email\" [(ngModel)] = \"user.email\"></p>\n    <p>Password: <input type=\"password\" name=\"password\" [(ngModel)] = \"user.password\"></p>\n    <button type=\"submit\">Login</button>\n    <p>{{logErrors}}</p>\n  </form>\n</div>\n<div id=\"reg\">\n  <h2>Register</h2>\n  <form (submit) = \"register()\">\n      <p>First Name: <input type=\"text\" name=\"firstName\" [(ngModel)] = \"newUser.firstName\"></p>\n      <p>Last Name: <input type=\"text\" name=\"lastName\" [(ngModel)] = \"newUser.lastName\"></p>\n      <p>Email: <input type=\"email\" name=\"email\" [(ngModel)] = \"newUser.email\"></p>\n      <p>Password: <input type=\"password\" name=\"password\" [(ngModel)] = \"newUser.password\"></p>\n      <p>Confirm Password: <input type=\"password\" name=\"pwConfirm\" [(ngModel)] = \"newUser.pwConfirm\"></p>\n      <button type=\"submit\">Register</button>\n      <p *ngIf = \"showRegSuccess == true\">Success! Feel free to log in!</p>\n      <p>{{regErrors}}</p>\n  </form>\n</div>"
+module.exports = "<div class=\"container\">\n  <ul class=\"nav nav-tabs\" id=\"myTab\" role=\"tablist\">\n    <li class=\"nav-item\">\n      <a class=\"nav-link active\" id=\"login-tab\" data-toggle=\"tab\" href=\"#login\" role=\"tab\" aria-controls=\"login\" aria-selected=\"true\">Log In</a>\n    </li>\n    <li class=\"nav-item\">\n      <a class=\"nav-link\" id=\"register-tab\" data-toggle=\"tab\" href=\"#register\" role=\"tab\" aria-controls=\"register\" aria-selected=\"false\">Register</a>\n    </li>\n  </ul>\n  <div class=\"tab-content\" id=\"myTabContent\">\n    <div class=\"tab-pane fade show active\" id=\"login\" role=\"tabpanel\" aria-labelledby=\"login-tab\">\n      <form (submit) = \"login()\">\n        <div class=\"form-group\">\n          <input class=\"form-control\" type=\"email\" name=\"email\" [(ngModel)] = \"user.email\" placeholder=\"Email\" >\n        </div>\n        <div class=\"form-group\">\n          <input class=\"form-control\" type=\"password\" name=\"password\" [(ngModel)] = \"user.password\" placeholder=\"Password\">\n        </div>\n        <button type=\"submit\" class=\"btn btn-primary btn-block\">Login</button>\n        <p>{{logErrors}}</p>\n      </form>\n    </div>\n    <div class=\"tab-pane fade\" id=\"register\" role=\"tabpanel\" aria-labelledby=\"register-tab\">\n      <form (submit) = \"register()\">\n          <div class=\"form-group\">\n            <input class=\"form-control\" type=\"text\" name=\"firstName\" [(ngModel)] = \"newUser.firstName\" placeholder=\"First Name\">\n          </div>\n          <div class=\"form-group\">\n            <input class=\"form-control\" type=\"text\" name=\"lastName\" [(ngModel)] = \"newUser.lastName\" placeholder=\"Last Name\">\n          </div>\n          <div class=\"form-group\">\n            <input class=\"form-control\" type=\"email\" name=\"email\" [(ngModel)] = \"newUser.email\" placeholder=\"Email\">\n          </div>\n          <div class=\"form-group\">\n            <input class=\"form-control\" type=\"password\" name=\"password\" [(ngModel)] = \"newUser.password\" placeholder=\"Password\">\n          </div>\n          <div class=\"form-group\">\n            <input class=\"form-control\" type=\"password\" name=\"pwConfirm\" [(ngModel)] = \"newUser.pwConfirm\" placeholder=\"Confirm Password\">\n          </div>\n          <button type=\"submit\" class=\"btn btn-primary btn-block\">Register</button>\n          <p *ngIf = \"showRegSuccess == true\">Success! Feel free to log in!</p>\n          <p>{{regErrors}}</p>\n      </form>\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -607,8 +639,10 @@ var LoginRegComponent = /** @class */ (function () {
         this.user = { email: "", password: "" };
         this.regErrors = [];
         this.showRegSuccess = false;
+        this.isLoggedIn = false;
     }
     LoginRegComponent.prototype.ngOnInit = function () {
+        this.isLoggedIn = false;
     };
     LoginRegComponent.prototype.register = function () {
         var _this = this;
@@ -638,6 +672,7 @@ var LoginRegComponent = /** @class */ (function () {
             }
             else {
                 console.log(response.message);
+                _this.isLoggedIn = true;
                 _this.router.navigate(['/dashboard']);
             }
         });
@@ -660,14 +695,14 @@ exports.LoginRegComponent = LoginRegComponent;
 /***/ "./src/app/player-list/player-list.component.css":
 /***/ (function(module, exports) {
 
-module.exports = ".playing-on {\n    background-color: green;\n}\n\n.not-playing-on {\n    background-color: red;\n}\n\n.undecided-on {\n    background-color: yellow;\n}"
+module.exports = ".container {\n    width: 50rem;\n}\n.playing-on {\n    background-color: green;\n}\n.not-playing-on {\n    background-color: red;\n}\n.undecided-on {\n    background-color: yellow;\n}\ntd .btn {\n    border: 0.05rem solid black;\n}\nh2 {\n    margin-top: 1rem;\n}\nh3 {\n    margin-bottom: 1rem;\n}\n#game-info {\n    margin: 1rem 0;\n}"
 
 /***/ }),
 
 /***/ "./src/app/player-list/player-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<button [routerLink] = \"['/dashboard']\">Back to Team List</button>\n<button [routerLink] = \"['/teams/' + teamId + '/add-player']\">Add a Player</button>\n<h2>{{teamName}}</h2>\n<h3>Game scheduled for {{date}}:</h3>\n<div *ngIf = \"noGame == false\">\n  <p>Opponent: {{opponent}}</p>\n  <p>Arena: {{venue.name}}</p>\n  <p>Location: {{venue.city}}, {{venue.state}}</p>\n</div>\n<div *ngIf = \"noGame == true\">\n  <p>No game scheduled</p>\n</div>\n<h3>Roster:</h3>\n<div id=\"search-bar\">\n  <input type=\"text\" name=\"searchTerm\" [(ngModel)] = \"searchTerm\" (keyup) = \"search()\" placeholder=\"Search Player\">\n</div>\n<table>\n  <thead>\n    <th>Name</th>\n    <th>Position</th>\n    <th>Status</th>\n  </thead>\n  <tbody>\n    <tr *ngFor = \"let player of filteredPlayers\">\n      <td>{{player.name}}</td>\n      <td>{{player.position}}</td>\n      <td>\n        <button [ngClass] = \"{ 'playing-on': player.isPlaying }\" (click) = \"submitStatus(player._id, 'playing')\">Playing</button>\n        <button [ngClass] = \"{ 'not-playing-on': player.isNotPlaying }\" (click) = \"submitStatus(player._id, 'not playing')\">Not Playing</button>\n        <button [ngClass] = \"{ 'undecided-on': player.isUndecided }\" (click) = \"submitStatus(player._id, 'undecided')\">Undecided</button>\n      </td>\n    </tr>\n  </tbody>\n</table>"
+module.exports = "<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-3\">\n      <button type=\"button\" class=\"btn btn-outline-info btn-block\" [routerLink] = \"['/dashboard']\">Back to Team List</button>\n    </div>\n    <div class=\"col-3\">\n      <button type=\"button\" class=\"btn btn-outline-primary btn-block\" [routerLink] = \"['/teams/' + teamId + '/add-player']\">Add New Player</button>\n    </div>\n    <div class=\"col-6\"></div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-12\">\n      <h2>{{teamName}}</h2>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-12\">\n      <h3>Game scheduled for {{date}}:</h3>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-12\">\n      <div class=\"game-info\" *ngIf = \"noGame == false\">\n        <dl class=\"row\">\n          <dt class=\"col-sm-2\">Opponent:</dt>\n          <dd class=\"col-sm-9\">{{opponent}}</dd>\n          <dt class=\"col-sm-2\">Arena:</dt>\n          <dd class=\"col-sm-9\">{{venue.name}}</dd>\n          <dt class=\"col-sm-2\">Location:</dt>\n          <dd class=\"col-sm-9\">{{venue.city}}, {{venue.state}}</dd>\n        </dl>\n      </div>\n      <div class=\"game-info\" *ngIf = \"noGame == true\">\n        <p>No game scheduled</p>\n      </div>\n    </div>\n  </div>\n  <div class=\"row justify-content-between no-gutters\">\n    <div class=\"col-4\">\n      <h3>Roster:</h3>\n    </div>\n    <div class=\"col-4\">\n      <div id=\"search-bar\">\n        <input class=\"form-control\" type=\"text\" name=\"searchTerm\" [(ngModel)] = \"searchTerm\" (keyup) = \"search()\" placeholder=\"Search Player\">\n      </div>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-12\">\n      <table class=\"table table-hover\">\n        <thead class=\"thead-light\">\n          <th>Name</th>\n          <th>Position</th>\n          <th>Status</th>\n        </thead>\n        <tbody>\n          <tr *ngFor = \"let player of filteredPlayers\">\n            <td class=\"align-middle\">{{player.name}}</td>\n            <td class=\"align-middle\">{{player.position}}</td>\n            <td>\n              <button type=\"button\" class=\"btn\" [ngClass] = \"{ 'playing-on': player.isPlaying }\" (click) = \"submitStatus(player._id, 'playing')\">Playing</button>\n              <button type=\"button\" class=\"btn\" [ngClass] = \"{ 'not-playing-on': player.isNotPlaying }\" (click) = \"submitStatus(player._id, 'not playing')\">Not Playing</button>\n              <button type=\"button\" class=\"btn\" [ngClass] = \"{ 'undecided-on': player.isUndecided }\" (click) = \"submitStatus(player._id, 'undecided')\">Undecided</button>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 

@@ -1,22 +1,46 @@
-<div id="login">
-  <h2>Log In</h2>
-  <form (submit) = "login()">
-    <p>Email: <input type="email" name="email" [(ngModel)] = "user.email"></p>
-    <p>Password: <input type="password" name="password" [(ngModel)] = "user.password"></p>
-    <button type="submit">Login</button>
-    <p>{{logErrors}}</p>
-  </form>
-</div>
-<div id="reg">
-  <h2>Register</h2>
-  <form (submit) = "register()">
-      <p>First Name: <input type="text" name="firstName" [(ngModel)] = "newUser.firstName"></p>
-      <p>Last Name: <input type="text" name="lastName" [(ngModel)] = "newUser.lastName"></p>
-      <p>Email: <input type="email" name="email" [(ngModel)] = "newUser.email"></p>
-      <p>Password: <input type="password" name="password" [(ngModel)] = "newUser.password"></p>
-      <p>Confirm Password: <input type="password" name="pwConfirm" [(ngModel)] = "newUser.pwConfirm"></p>
-      <button type="submit">Register</button>
-      <p *ngIf = "showRegSuccess == true">Success! Feel free to log in!</p>
-      <p>{{regErrors}}</p>
-  </form>
+<div class="container">
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Log In</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">Register</a>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
+      <form (submit) = "login()">
+        <div class="form-group">
+          <input class="form-control" type="email" name="email" [(ngModel)] = "user.email" placeholder="Email" >
+        </div>
+        <div class="form-group">
+          <input class="form-control" type="password" name="password" [(ngModel)] = "user.password" placeholder="Password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Login</button>
+        <p>{{logErrors}}</p>
+      </form>
+    </div>
+    <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
+      <form (submit) = "register()">
+          <div class="form-group">
+            <input class="form-control" type="text" name="firstName" [(ngModel)] = "newUser.firstName" placeholder="First Name">
+          </div>
+          <div class="form-group">
+            <input class="form-control" type="text" name="lastName" [(ngModel)] = "newUser.lastName" placeholder="Last Name">
+          </div>
+          <div class="form-group">
+            <input class="form-control" type="email" name="email" [(ngModel)] = "newUser.email" placeholder="Email">
+          </div>
+          <div class="form-group">
+            <input class="form-control" type="password" name="password" [(ngModel)] = "newUser.password" placeholder="Password">
+          </div>
+          <div class="form-group">
+            <input class="form-control" type="password" name="pwConfirm" [(ngModel)] = "newUser.pwConfirm" placeholder="Confirm Password">
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Register</button>
+          <p *ngIf = "showRegSuccess == true">Success! Feel free to log in!</p>
+          <p>{{regErrors}}</p>
+      </form>
+    </div>
+  </div>
 </div>

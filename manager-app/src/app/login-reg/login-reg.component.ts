@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Router } from '@angular/router';
 
@@ -13,10 +13,12 @@ export class LoginRegComponent implements OnInit {
   regErrors: string[] = [];
   logErrors: string;
   showRegSuccess: boolean = false;
+  public isLoggedIn: boolean = false;
 
   constructor(private apiService: ApiService, private router: Router) { }
 
   ngOnInit() {
+    this.isLoggedIn = false;
   }
 
   register() {
@@ -24,7 +26,7 @@ export class LoginRegComponent implements OnInit {
     .subscribe((response: any) => {
       if (response.errors) {
         this.regErrors = [];
-        for (let error in response.errors) {
+        for (let error in response.errors) { 
           console.log(response.errors[error].message);
           this.regErrors.push(response.errors[error].message);
         }
@@ -44,6 +46,7 @@ export class LoginRegComponent implements OnInit {
         this.logErrors = response.errors.message;
       } else {
         console.log(response.message);
+        this.isLoggedIn = true;
         this.router.navigate(['/dashboard']);
       }
     })

@@ -1,34 +1,70 @@
-<button [routerLink] = "['/dashboard']">Back to Team List</button>
-<button [routerLink] = "['/teams/' + teamId + '/add-player']">Add a Player</button>
-<h2>{{teamName}}</h2>
-<h3>Game scheduled for {{date}}:</h3>
-<div *ngIf = "noGame == false">
-  <p>Opponent: {{opponent}}</p>
-  <p>Arena: {{venue.name}}</p>
-  <p>Location: {{venue.city}}, {{venue.state}}</p>
+<div class="container">
+  <div class="row">
+    <div class="col-3">
+      <button type="button" class="btn btn-outline-info btn-block" [routerLink] = "['/dashboard']">Back to Team List</button>
+    </div>
+    <div class="col-3">
+      <button type="button" class="btn btn-outline-primary btn-block" [routerLink] = "['/teams/' + teamId + '/add-player']">Add New Player</button>
+    </div>
+    <div class="col-6"></div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <h2>{{teamName}}</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <h3>Game scheduled for {{date}}:</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="game-info" *ngIf = "noGame == false">
+        <dl class="row">
+          <dt class="col-sm-2">Opponent:</dt>
+          <dd class="col-sm-9">{{opponent}}</dd>
+          <dt class="col-sm-2">Arena:</dt>
+          <dd class="col-sm-9">{{venue.name}}</dd>
+          <dt class="col-sm-2">Location:</dt>
+          <dd class="col-sm-9">{{venue.city}}, {{venue.state}}</dd>
+        </dl>
+      </div>
+      <div class="game-info" *ngIf = "noGame == true">
+        <p>No game scheduled</p>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-between no-gutters">
+    <div class="col-4">
+      <h3>Roster:</h3>
+    </div>
+    <div class="col-4">
+      <div id="search-bar">
+        <input class="form-control" type="text" name="searchTerm" [(ngModel)] = "searchTerm" (keyup) = "search()" placeholder="Search Player">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-hover">
+        <thead class="thead-light">
+          <th>Name</th>
+          <th>Position</th>
+          <th>Status</th>
+        </thead>
+        <tbody>
+          <tr *ngFor = "let player of filteredPlayers">
+            <td class="align-middle">{{player.name}}</td>
+            <td class="align-middle">{{player.position}}</td>
+            <td>
+              <button type="button" class="btn" [ngClass] = "{ 'playing-on': player.isPlaying }" (click) = "submitStatus(player._id, 'playing')">Playing</button>
+              <button type="button" class="btn" [ngClass] = "{ 'not-playing-on': player.isNotPlaying }" (click) = "submitStatus(player._id, 'not playing')">Not Playing</button>
+              <button type="button" class="btn" [ngClass] = "{ 'undecided-on': player.isUndecided }" (click) = "submitStatus(player._id, 'undecided')">Undecided</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
-<div *ngIf = "noGame == true">
-  <p>No game scheduled</p>
-</div>
-<h3>Roster:</h3>
-<div id="search-bar">
-  <input type="text" name="searchTerm" [(ngModel)] = "searchTerm" (keyup) = "search()" placeholder="Search Player">
-</div>
-<table>
-  <thead>
-    <th>Name</th>
-    <th>Position</th>
-    <th>Status</th>
-  </thead>
-  <tbody>
-    <tr *ngFor = "let player of filteredPlayers">
-      <td>{{player.name}}</td>
-      <td>{{player.position}}</td>
-      <td>
-        <button [ngClass] = "{ 'playing-on': player.isPlaying }" (click) = "submitStatus(player._id, 'playing')">Playing</button>
-        <button [ngClass] = "{ 'not-playing-on': player.isNotPlaying }" (click) = "submitStatus(player._id, 'not playing')">Not Playing</button>
-        <button [ngClass] = "{ 'undecided-on': player.isUndecided }" (click) = "submitStatus(player._id, 'undecided')">Undecided</button>
-      </td>
-    </tr>
-  </tbody>
-</table>

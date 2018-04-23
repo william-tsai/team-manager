@@ -1,5 +1,13 @@
-<h3>Add A Team</h3>
+<h6>
+  Enter a non-existing team name to create your own
+  <br>
+  Or
+  <br> 
+  Enter an existing team name (e.g. Lakers) to have its roster automatically populated 
+</h6>
 <form (submit) = "submitToCreateTeamAndEmit()">
-  <p>Team name: <input type="text" name="name" [(ngModel)]="newTeam.name"></p>
-  <button type="submit">Create</button>
+  <div class="form-group">
+    <input class="form-control" type="text" name="name" placeholder="Team Name" [(ngModel)]="newTeam.name">
+  </div>
+  <button type="submit" class="btn btn-primary btn-block">Add</button>
 </form>

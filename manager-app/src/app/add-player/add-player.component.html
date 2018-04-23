@@ -1,7 +1,14 @@
-<button [routerLink] = "['/teams/' + teamId + '/players']">Cancel</button>
-<form (submit) = "submitToCreatePlayer()">
-    <p>Name: <input type="text" name="name" [(ngModel)] = "newPlayer.name"></p>
-    <p>Position: <input type="text" name="position" [(ngModel)] = "newPlayer.position"></p>
-    <button type="submit">Add Player</button>
-    <p *ngFor = "let error of errors">{{error}}</p>
-</form>
+<div class="container">
+    <h3>Add A New Player</h3>
+    <form (submit) = "submitToCreatePlayer()">
+        <div class="form-group">
+            <input class="form-control" type="text" name="name" placeholder="Name" [(ngModel)] = "newPlayer.name">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" name="position" placeholder="Position" [(ngModel)] = "newPlayer.position">
+        </div>
+        <button type="submit" class="btn btn-outline-primary">Add Player</button>
+        <button type="button" class="btn btn-outline-secondary" [routerLink] = "['/teams/' + teamId + '/players']">Cancel</button>
+        <p *ngFor = "let error of errors">{{error}}</p>
+    </form>
+</div>

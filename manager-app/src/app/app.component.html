@@ -1,2 +1,6 @@
-<h1>Team Manger</h1>
-<router-outlet></router-outlet>
+<div class="background">
+    <div class="overlay">
+        <h1>Team Roster Manger</h1>
+        <router-outlet (activate)="onActivate($event)"></router-outlet>
+    </div>
+</div>

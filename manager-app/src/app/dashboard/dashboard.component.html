@@ -1,4 +1,19 @@
-<button (click) = "logoutBtnClicked()">Logout</button>
-<button (click) = "showList()">List</button> | <button (click) = "showAddTeam()">Add Team</button>
-<app-list *ngIf = "isListVisible == true"></app-list>
-<app-add-team *ngIf = "isAddFormVisible == true" (addEvent) = "receiveChildData($event)"></app-add-team>
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <button type="button" class="btn btn-outline-info btn-block" (click) = "showList()">Teams</button>
+        </div>
+        <div class="col-4">
+            <button type="button" class="btn btn-outline-primary btn-block" (click) = "showAddTeam()">Add New Team</button>
+        </div>
+        <div class="col-4">
+            <button type="button" class="btn btn-outline-dark btn-block" (click) = "logoutBtnClicked()">Logout</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <app-list *ngIf = "isListVisible == true"></app-list>
+            <app-add-team *ngIf = "isAddFormVisible == true" (addEvent) = "receiveChildData($event)"></app-add-team>
+        </div>
+    </div>
+</div>

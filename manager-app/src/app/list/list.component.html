@@ -1,16 +1,16 @@
-<table>
-  <thead>
+<table class="table table-hover">
+  <thead class="thead-light">
     <th>Team Name</th>
     <th>Number of Players</th>
     <th>Actions</th>
   </thead>
   <tbody>
     <tr *ngFor = "let team of teams">
-      <td><a [routerLink] = "['/teams/' + team._id + '/players']">{{team.name}}</a></td>
-      <td>{{team.players.length}}</td>
+      <td class="align-middle"><a [routerLink] = "['/teams/' + team._id + '/players']">{{team.name}}</a></td>
+      <td class="align-middle">{{team.players.length}}</td>
       <td>
-        <button (click) = "deleteBtnClicked(team._id)">Delete</button>
-        <button [routerLink] = "['/teams/' + team._id + '/add-player']">Add Player</button>
+        <button type="button" class="btn btn-sm btn-outline-primary" [routerLink] = "['/teams/' + team._id + '/add-player']">Add Player</button>
+        <button type="button" class="btn btn-sm btn-outline-danger" (click) = "deleteBtnClicked(team._id)">Delete</button>
       </td>
     </tr>
   </tbody>
