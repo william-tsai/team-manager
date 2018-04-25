@@ -287,7 +287,7 @@ exports.AppRoutingModule = AppRoutingModule;
 /***/ "./src/app/app.component.css":
 /***/ (function(module, exports) {
 
-module.exports = "* {\n    margin: 0;\n    padding: 0;\n}\nh1 {\n    text-align: center;\n    margin: 7rem 0 2rem 0;\n}\n.background {\n    background-image: url('sports.7557fbbf685626d83a8a.png');\n    background-attachment: fixed;\n    background-size: cover;\n    background-position: center;\n}\n.no-background {\n    background-color: #ffffff;\n}\n.overlay {\n    position: absolute;\n    min-height: 100%;\n    min-width: 100%;\n    left: 0;\n    top: 0;\n    background: rgba(244, 244, 244, 0.90);\n}\n.no-overlay {\n    background-color: #ffffff;\n}"
+module.exports = "* {\n    margin: 0;\n    padding: 0;\n}\nh1 {\n    text-align: center;\n    margin: 12rem 0 2rem 0;\n}\n.background {\n    background-image: url('sports.7557fbbf685626d83a8a.png');\n    background-attachment: fixed;\n    background-size: cover;\n    background-position: center;\n}\n.no-background {\n    background-color: #ffffff;\n}\n.overlay {\n    position: absolute;\n    min-height: 100%;\n    min-width: 100%;\n    left: 0;\n    top: 0;\n    background: rgba(244, 244, 244, 0.90);\n}\n.no-overlay {\n    background-color: #ffffff;\n}"
 
 /***/ }),
 
