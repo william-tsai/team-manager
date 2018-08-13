@@ -8,7 +8,7 @@ var app = express();
 app.use(session({secret: "codingisawesome"}));
 app.use(express.static(__dirname + "/manager-app/dist"));
 app.use(bodyParser.json());
-mongoose.connect("mongodb://localhost/teamManagerNg");
+mongoose.connect("mongodb://localhost/teamManagerNg", { useNewUrlParser: true });
 mongoose.Promise = global.Promise;
 
 require("./server/config/mongoose.js")
